@@ -1,0 +1,41 @@
+name: "Publish"
+
+on:
+  push:
+    branches:
+      - main
+  # repository_dispatch:
+  #     types: [trigger] # This is for the two way sync from Hashnode, to use this you will have to set up a serverless function as a middleware.
+
+jobs:
+  print_file_job:
+    runs-on: ubuntu-latest
+    name: Hashnode Github Sync
+    permissions:
+      contents: write # Make sure to provide this write permission if you are using two way sync, not required if you're using only one way sync i.e : Github to Hashnode
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+
+    # This action is necessary as it is giving the details about your files in repo
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+
+      - name: Hashnode Github Sync
+        uses: iammarmirza/hashnode-github-sync@v1.6
+        env: 
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}} 
+          # This is your default github token
+        with:
+        # All of these fields are required except hashnode_event
+          hashnode_host: "breachforce.net" # Your hashnode host name
+          hashnode_token: ${{ secrets.HASHNODE_TOKEN }} # Your hashnode secret key
+          added_files: ${{steps.changed-files.outputs.added_files}}
+          modified_files: ${{steps.changed-files.outputs.modified_files}}
+          deleted_files: ${{steps.changed-files.outputs.deleted_files}}
+          # hashnode_event: ${{toJson(github.event.client_payload)}} 
+          # Hashnode_event is required in the case of two way sync
