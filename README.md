@@ -107,4 +107,12 @@ This README serves as a reference guide for publishing articles from GitHub to H
   }
   ```
 
+## 11. Markdown Compatibility with Hashnode
+
+- A **template file** has been created, named `TEMPLATE.md`, located in the **root directory** of this repository.
+- This template outlines:
+  - What Markdown features are supported by Hashnode.
+  - What features are **not supported** or might cause issues.
+- **Refer to `TEMPLATE.md`** if you have any doubts or need clarification regarding the use of Markdown when publishing articles on Hashnode.
+
 ---
